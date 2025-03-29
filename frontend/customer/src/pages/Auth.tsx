@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { register, login } from '@/api/auth';
+import { useToast } from '@/components/ui/use-toast';
 
 const Auth = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   
   // Login form state
@@ -24,29 +27,96 @@ const Auth = () => {
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('');
 
   // Handle login submission
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    
+    if (!loginEmail || !loginPassword) {
+      toast({
+        title: 'Error',
+        description: 'Please fill in all fields',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // For demo purposes, just redirect to home page
+    try {
+      const { token, role } = await login(loginEmail, loginPassword);
+      
+      // Store token and role in localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      
+      toast({
+        title: 'Success',
+        description: 'Logged in successfully',
+      });
+      
       navigate('/');
-    }, 1500);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Login failed',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle registration submission
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    
+    if (!registerName || !registerEmail || !registerPassword || !registerConfirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'Please fill in all fields',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
+    if (registerPassword !== registerConfirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'Passwords do not match',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate registration process
-    setTimeout(() => {
+    try {
+      await register(registerName, registerEmail, registerPassword);
+      
+      toast({
+        title: 'Success',
+        description: 'Account created successfully. Please login.',
+      });
+      
+      // Switch to login tab after successful registration
+      const loginTab = document.querySelector('[data-state="active"]') as HTMLElement | null;
+      if (loginTab) {
+        loginTab.click();
+      }
+
+      // Clear form
+      setRegisterName('');
+      setRegisterEmail('');
+      setRegisterPassword('');
+      setRegisterConfirmPassword('');
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Registration failed',
+        variant: 'destructive'
+      });
+    } finally {
       setIsLoading(false);
-      // For demo purposes, just redirect to home page
-      navigate('/');
-    }, 1500);
+    }
   };
 
   return (

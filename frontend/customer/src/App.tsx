@@ -14,6 +14,7 @@ import Confirmation from "./pages/Confirmation";
 import Bookings from "./pages/Bookings";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import RequireAuth from "./components/RequireAuth";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,7 @@ const App = () => (
           <Route path="/parking-slots/:id" element={<ParkingSlots />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="/bookings" element={<Bookings />} />
+          <Route path="/bookings" element={<RequireAuth><Bookings /></RequireAuth>} />
           <Route path="/auth" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
