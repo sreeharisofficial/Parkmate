@@ -1,0 +1,5 @@
+MONGO_DB_URI=mongodb+srv://rohankrajendran:dT8iocAcdO7PcGRi@cluster0.qlvvubt.mongodb.net/?retryWrites=true&w=majority
+PORT=3000
+SECRET_KEY=secretkey
+
+# dT8iocAcdO7PcGRi
