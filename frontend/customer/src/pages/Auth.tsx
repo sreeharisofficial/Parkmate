@@ -53,7 +53,7 @@ const Auth = () => {
         description: 'Logged in successfully',
       });
       
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       toast({
         title: 'Error',

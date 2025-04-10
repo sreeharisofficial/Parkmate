@@ -29,21 +29,38 @@ export const login = async (email, password) => {
 };
 
 export const logout = async () => {
-  try {
-    // Get token from localStorage
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    
-    await axios.post(`${API_URL}/logout`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    try {
+      const token = localStorage.getItem('token');
+      
+      // If there's no token, just clear local storage
+      if (!token) {
+        clearAuthData();
+        return;
       }
-    });
-    
-    // Clear local storage
+  
+      // Attempt to call the logout endpoint
+      await axios.post(`${API_URL}/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      // Clear auth data regardless of API response
+      clearAuthData();
+      
+      // Redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if the API call fails, clear local storage
+      clearAuthData();
+      window.location.href = '/';
+    }
+  };
+  
+  // Helper function to clear auth data
+  const clearAuthData = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-  } catch (error) {
-    console.error('Logout error:', error);
-  }
-};
+    localStorage.removeItem('user');
+  };

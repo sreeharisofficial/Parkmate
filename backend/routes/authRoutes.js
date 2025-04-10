@@ -49,14 +49,22 @@ router.post("/login", async (req, res) => {
 
 //LOGOUT
 router.post("/logout", verifyToken, (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
 
-  if (!token) {
-    return res.status(401).json({ error: "No token provided" });
+    // Add the token to the blacklist
+    tokenBlacklist.add(token);
+    
+    // Respond successfully
+    res.json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  tokenBlacklist.add(token);
-  res.json({ message: "Logged out successfully" });
 });
 
 //PROTECTED ROUTES

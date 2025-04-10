@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { isAuthenticated } from '@/middleware/auth';
+import { logout } from '@/api/auth';
 import { UserCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -20,24 +22,26 @@ const Navbar: React.FC = () => {
           <span className="font-bold text-xl text-primary">ParkMate</span>
         </Link>
         
-        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+        {isAuthenticated() ? (
+          <>
+            <Link to="/home">Home</Link>
+            <Link to="/bookings">My Bookings</Link>
+            <Link to="/">
+              <Button onClick={logout}>Logout</Button>
+            </Link>
+          </>
+        ) : (
+          <>
           <Link to="/about" className="text-gray-600 hover:text-primary font-medium hidden md:inline">
             About
           </Link>
-          <Link to="/contact" className="text-gray-600 hover:text-primary font-medium hidden md:inline">
-            Contact
-          </Link>
-          <Link to="/bookings" className="text-gray-600 hover:text-primary font-medium hidden md:inline">
-            My Bookings
-          </Link>
-          
           <Link to="/auth">
-            <Button className="flex items-center gap-2">
-              <UserCircle size={18} />
-              <span className="hidden sm:inline">Login / Sign Up</span>
-            </Button>
+            <Button>Login</Button>
           </Link>
-        </div>
+          </>
+        )}
+      </div>
       </div>
     </nav>
   );

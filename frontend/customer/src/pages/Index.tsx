@@ -1,39 +1,11 @@
-
 import React from 'react';
 import { MapPin, Shield, Tag, Clock, CreditCard, Navigation } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import SearchForm from '@/components/SearchForm';
 import FeatureCard from '@/components/FeatureCard';
-import ParkingMap from '@/components/ParkingMap';
 import { Button } from '@/components/ui/button';
-
-// Sample parking spots for the map
-const sampleParkingSpots = [
-  {
-    id: '1',
-    position: [11.2588, 75.7804],
-    title: "Downtown Parking Garage",
-    price: "$5/hr",
-    available: 12
-  },
-  {
-    id: '2',
-    position: [11.2600, 75.7820],
-    title: "River North Lot",
-    price: "$7/hr",
-    available: 5
-  },
-  {
-    id: '3',
-    position: [11.2550, 75.7850],
-    title: "Museum Campus Parking",
-    price: "$10/day",
-    available: 20
-  }
-];
 
 const Index = () => {
   return (
@@ -43,29 +15,25 @@ const Index = () => {
       {/* Hero Section */}
       <div className="pt-24 pb-16 bg-gradient-to-r from-primary to-secondary text-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="w-full lg:w-1/2 space-y-6 animate-fadeIn">
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                Parking Made Easy,<br />Wherever You Go
-              </h1>
-              <p className="text-lg opacity-90">
-                Find and reserve the perfect parking spot in advance. No more driving in circles.
-              </p>
-              
-              <div className="flex gap-4">
-                <Link to="/about">
-                  <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20">
-                    Learn More
-                  </Button>
-                </Link>
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+              Parking Made Easy, Wherever You Go
+            </h1>
+            <p className="text-lg opacity-90 mb-8">
+              Find and reserve the perfect parking spot in advance. No more driving in circles.
+            </p>
+            
+            <div className="flex gap-4 justify-center">
+              <Link to="/auth">
+                <Button variant="outline" className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/auth">
                 <Button className="bg-success hover:bg-success-hover">
                   Get Started
                 </Button>
-              </div>
-            </div>
-            
-            <div className="w-full lg:w-1/2">
-              <SearchForm />
+              </Link>
             </div>
           </div>
         </div>
@@ -111,20 +79,8 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Map Section */}
-      <div className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">Find Parking Near You</h2>
-          <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
-            Explore the map to discover available parking spots in your area. Click on a marker to see details and reserve your spot.
-          </p>
-          
-          <ParkingMap spots={sampleParkingSpots} />
-        </div>
-      </div>
-      
       {/* How It Works */}
-      <div className="py-16 bg-gray-50">
+      <div className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">How ParkMate Works</h2>
           
@@ -161,9 +117,11 @@ const Index = () => {
           </div>
           
           <div className="text-center mt-12">
-            <Button className="bg-success hover:bg-success-hover">
-              Find Parking Now
-            </Button>
+            <Link to="/auth">
+              <Button className="bg-success hover:bg-success-hover">
+                Get Started Now
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
